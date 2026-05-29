@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINK.YU</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen selection:bg-indigo-500 selection:text-white">
+
+    <div class="max-w-4xl mx-auto px-4 py-10">
+        <header class="text-center mb-10">
+            <div class="inline-block bg-indigo-600/10 border border-indigo-500/20 px-4 py-1.5 rounded-full text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3 shadow-sm">
+                LINK.YU Catalog System
+            </div>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 text-center whitespace-pre-line leading-relaxed">
+                WAJIB PESAN GAME DI LINK.YU?
+                SELAIN ITU BUKAN TOKO SAYA 
+                WA : 08 777 26 7777 6
+            </h1>
+            <p class="text-gray-400 text-sm md:text-base">
+                Ketik Seuai Speck kamu atau Tipe Laptop Kamu dan Nama game kamu 
+            </p>
+        </header>
+
+        <div class="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700/70 mb-8 backdrop-blur-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold text-indigo-400 border-b border-gray-700 pb-2 flex items-center gap-2">
+                        <span>💻</span> 1. Spesifikasi Laptop
+                    </h3>
+                    
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Nama / Tipe Laptop Lengkap</label>
+                        <input type="text" id="laptopNameInput" list="laptopSuggestions" oninput="suggestLaptopClean()" placeholder="Ketik merk/seri laptop pembeli..." class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition duration-150">
+                        <datalist id="laptopSuggestions"></datalist>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Kapasitas RAM Laptop</label>
+                        <select id="laptopRam" class="w-full bg-gray-700 border border-gray-600 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition duration-150">
+                            <option value="4">2 GB</option>
+                            <option value="4">4 GB</option>
+                            <option value="8" selected>8 GB</option>
+                            <option value="12">12 GB</option>
+                            <option value="16">16 GB</option>
+                            <option value="24">24 GB</option>
+                            <option value="32">32 GB</option>
+                            <option value="64">64 GB</option>
+                            <option value="64">128 GB</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-indigo-400 border-b border-gray-700 pb-2 flex items-center gap-2">
+                            <span>🎮</span> 2. Game yang Dicari
+                        </h3>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Cari Judul Game PC </label>
+                            <input type="text" id="gameInput" list="gameSuggestions" oninput="suggestGameRAWGOnly()" placeholder="Ketik game, misal: naruto, gta v, forza..." class="w-full bg-gray-700 border border-gray-600 rounded-xl px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition duration-150">
+                            <datalist id="gameSuggestions"></datalist>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 md:mt-0">
+                        <button onclick="checkCompatibilityWithGemini()" id="btnCheck" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-indigo-900/30 active:scale-[0.99]">
+                            Cek Kompatibilitas Game
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="resultContainer" class="hidden bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700/70 transition-all duration-350">
+            <h2 class="text-2xl font-bold mb-4 text-center tracking-tight text-gray-200">Hasil Analisis Spek LINK.YU</h2>
+            
+            <div class="flex flex-col md:flex-row items-center justify-around p-4 rounded-xl bg-gray-950/60 border border-gray-800/80 mb-6">
+                <div class="text-center mb-4 md:mb-0">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Laptop Pembeli</p>
+                    <p id="resLaptop" class="text-base font-bold text-indigo-400 tracking-wide">-</p>
+                </div>
+                <div class="text-2xl text-gray-700 font-black hidden md:block font-mono select-none">VS</div>
+                <div class="text-center">
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Game Dicari</p>
+                    <p id="resGame" class="text-base font-bold text-indigo-400 tracking-wide">-</p>
+                </div>
+            </div>
+
+            <div id="statusBadge" class="text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 shadow-inner transition-all duration-300"></div>
+
+            <div class="bg-gray-950/40 border border-gray-700/50 p-5 rounded-xl text-sm">
+                <h3 class="font-bold text-gray-300 mb-2 flex items-center gap-1.5">
+                </h3>
+                <p id="aiAnalysisResult" class="text-gray-400 font-mono leading-relaxed whitespace-pre-line text-xs"></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== SETTING BASE URL & KEY KAMU DI SINI ====================
+        const BASE_URL = "https://api.koboillm.com/v1"; 
+        const API_KEY  = "sk-VqqZAF9DONhdzLBbkjHtRw"; 
+        const MODEL_NAME = "gemini-2.0-flash-lite"; 
+        
+        // MASUKKAN API KEY RAWG GRATISANMU DI SINI
+        const RAWG_API_KEY = "158b3858daed4d67af02a839d14ba445"; 
+        // =============================================================================
+
+        // DATABASE INTERNAL 500 TIPE LAPTOP LOKAL & HANDHELD PC - 100% BERSIH
+        const cleanLaptopDatabase = [
+            // === PC HANDHELD GAME CONSOLE (15) ===
+            "Lenovo Legion Go Z1 Extreme", "ASUS ROG Ally Z1", "ASUS ROG Ally Z1 Extreme", "ASUS ROG Ally X",
+            "Valve Steam Deck LCD", "Valve Steam Deck OLED", "MSI Claw A1M Ultra 5", "MSI Claw A1M Ultra 7", "MSI Claw 8 AI Plus",
+            "AYANEO 2", "AYANEO Geek", "AYANEO Air Pro", "AYANEO Kun", "OneXPlayer 2", "GPD Win 4",
+
+            // === ASUS ROG SERIES (75) ===
+            "ASUS ROG Flow Z13 GZ301", "ASUS ROG Flow Z13 ACRNM", "ASUS ROG Flow X13 GV301", "ASUS ROG Flow X13 GV302", "ASUS ROG Flow X16 GV601",
+            "ASUS ROG Strix G15 G513", "ASUS ROG Strix G15 GL543", "ASUS ROG Strix G16 G614", "ASUS ROG Strix G16 G614JV", "ASUS ROG Strix G16 G614JU",
+            "ASUS ROG Strix G16 G614JI", "ASUS ROG Strix G17 G713", "ASUS ROG Strix G17 G713PI", "ASUS ROG Strix G18 G814", "ASUS ROG Strix G18 G814JZ",
+            "ASUS ROG Strix SCAR 15 G533", "ASUS ROG Strix SCAR 16 G634", "ASUS ROG Strix SCAR 16 G634JZ", "ASUS ROG Strix SCAR 17 G733", "ASUS ROG Strix SCAR 18 G834",
+            "ASUS ROG Zephyrus G14 GA401", "ASUS ROG Zephyrus G14 GA402", "ASUS ROG Zephyrus G14 GA403", "ASUS ROG Zephyrus G16 GU603", "ASUS ROG Zephyrus G16 GU605",
+            "ASUS ROG Zephyrus M16 GU604", "ASUS ROG Zephyrus Duo 15 GX550", "ASUS ROG Zephyrus Duo 16 GX650", "ASUS ROG Mothership GZ700", "ASUS ROG Huracan G21",
+            "ASUS ROG Strix GL502", "ASUS ROG Strix GL503", "ASUS ROG Strix GL504 Hero", "ASUS ROG Strix GL552", "ASUS ROG Strix GL553",
+            "ASUS ROG Strix GL702", "ASUS ROG Strix GL703", "ASUS ROG Strix GL753", "ASUS ROG Zephyrus GX501", "ASUS ROG Zephyrus GX531",
+            "ASUS ROG Zephyrus GX701", "ASUS ROG M GU502", "ASUS ROG Zephyrus S GX502", "ASUS ROG Zephyrus S GX701", "ASUS ROG Strix G512",
+            "ASUS ROG Strix G712", "ASUS ROG Strix SCAR III", "ASUS ROG Strix Hero III", "ASUS ROG Zephyrus G GA502", "ASUS ROG Zephyrus G15 GA503",
+            "ASUS ROG Chimera G703", "ASUS ROG Strix GL12 CX", "ASUS ROG Strix GT15", "ASUS ROG Strix G35", "ASUS ROG Zephyrus M15",
+            "ASUS ROG Strix G15 Advantage Edition", "ASUS ROG Strix SCAR 17 X3D", "ASUS ROG Strix G16 G614JIR", "ASUS ROG Zephyrus G16 GU605MV", "ASUS ROG Flow X13 GV302XV",
+            "ASUS ROG Strix GL503VD", "ASUS ROG Strix GL503GE", "ASUS ROG Strix GL703VD", "ASUS ROG Zephyrus G14 GA401IV", "ASUS ROG Zephyrus G14 GA401IU",
+            "ASUS ROG Strix G513IC", "ASUS ROG Strix G513IE", "ASUS ROG Strix G513IH", "ASUS ROG Strix G713QE", "ASUS ROG Strix SCAR 15 G532",
+            "ASUS ROG Strix SCAR 17 G732", "ASUS ROG Zephyrus S15 GX502LXS", "ASUS ROG Zephyrus S17 GX701LXS", "ASUS ROG Zephyrus Duo 15 SE GX551", "ASUS ROG Flow Z13 GZ301VU",
+
+            // === ASUS TUF & VIVOBOOK & ZENBOOK (65) ===
+            "ASUS TUF Gaming A15 FA506", "ASUS TUF Gaming A15 FA507", "ASUS TUF Gaming A16 Advantage Edition", "ASUS TUF Gaming A17 FA706", "ASUS TUF Gaming A17 FA707",
+            "ASUS TUF Gaming F15 FX506", "ASUS TUF Gaming F15 FX507", "ASUS TUF Gaming F17 FX706", "ASUS TUF Gaming F17 FX707", "ASUS TUF Gaming Dash F15 FX516",
+            "ASUS TUF Gaming Dash F15 FX517", "ASUS TUF Gaming FX503", "ASUS TUF Gaming FX504", "ASUS TUF Gaming FX505", "ASUS TUF Gaming FX505DY",
+            "ASUS TUF Gaming FX505GE", "ASUS TUF Gaming FX505GD", "ASUS TUF Gaming FX505DT", "ASUS TUF Gaming FX705", "ASUS TUF Gaming FX516PM",
+            "ASUS TUF Gaming A15 FA507NU", "ASUS TUF Gaming A15 FA507NV", "ASUS TUF Gaming F15 FX507ZC4", "ASUS TUF Gaming F15 FX507ZV4", "ASUS TUF Gaming A16 FA607",
+            "ASUS TUF Gaming F16 FX607", "ASUS TUF Gaming FX506HC", "ASUS TUF Gaming FX506HE", "ASUS TUF Gaming FX506LH", "ASUS TUF Gaming A15 FA506IC",
+            "ASUS VivoBook 14 A416", "ASUS VivoBook 14 K413", "ASUS VivoBook 14 Go E410", "ASUS VivoBook 14 Flip", "ASUS VivoBook Ultra 14 K413",
+            "ASUS VivoBook Pro 14 OLED", "ASUS VivoBook Pro 14X OLED", "ASUS VivoBook Pro 15 OLED", "ASUS VivoBook Pro 16X OLED", "ASUS VivoBook 16X K3605",
+            "ASUS VivoBook S14 S433", "ASUS VivoBook S15 S533", "ASUS VivoBook 15 X515", "ASUS VivoBook Go 14 E1404F", "ASUS VivoBook S 14 OLED",
+            "ASUS Zenbook 14 UX425", "ASUS Zenbook 14 OLED UX3402", "ASUS Zenbook 14 Flip OLED", "ASUS Zenbook Pro 14 Duo", "ASUS Zenbook S13 OLED",
+            "ASUS Zenbook Pro 16X OLED", "ASUS Zenbook 15 UX534", "ASUS Zenbook Duo UX482", "ASUS Zenbook Duo UX8406 DUO", "ASUS Zenbook 14 OLED UX3405",
+            "ASUS ExpertBook B1400", "ASUS ExpertBook B9450", "ASUS ExpertBook B3 Detachable", "ASUS ExpertBook B5", "ASUS ExpertBook B7 Flip",
+            "ASUS BR1100F", "ASUS Chromebook Flip", "ASUS Laptop X441", "ASUS Laptop X453", "ASUS Laptop A456U",
+
+            // === LENOVO LEGION & LOQ & IDEAPAD GAMING (65) ===
+            "Lenovo Legion Slim 5 16APH8", "Lenovo Legion Slim 5 16IRH8", "Lenovo Legion Slim 7 16IRH8", "Lenovo Legion Pro 5 16IRX8", "Lenovo Legion Pro 5 16ARX8",
+            "Lenovo Legion Pro 7 16IRX8", "Lenovo Legion 5 15ACH6", "Lenovo Legion 5 15ITH6", "Lenovo Legion 5i Pro", "Lenovo Legion 7 16ACH6",
+            "Lenovo Legion 7i Pro", "Lenovo Legion 9i 16IRX8", "Lenovo LOQ 15IRH8", "Lenovo LOQ 15APH8", "Lenovo LOQ 15IAX9", "Lenovo LOQ 15IAX9I",
+            "Lenovo LOQ 15IRX9", "Lenovo LOQ 15AHP9 G9", "Lenovo Legion Pro 5i", "Lenovo Legion Pro 7i", "Lenovo Legion Slim 5i",
+            "Lenovo Legion 5 15ARP8", "Lenovo Legion 5 16IRX9", "Lenovo Legion 7 16IRX9", "Lenovo Legion Pro 5 16IRX9", "Lenovo Legion Y520-15IKBN",
+            "Lenovo Legion Y530-15ICH", "Lenovo Legion Y540-15IRH", "Lenovo Legion 5 15IMH05H", "Lenovo Legion 5 15ARH05H", "Lenovo Legion Pro 16ACH6H",
+            "Lenovo Legion Pro 16ITH6H", "Lenovo Legion 7 16ITH6", "Lenovo Legion Slim 7 15ACH6", "Lenovo Legion 5 15IAH7H", "Lenovo Legion Pro 16IAH7H",
+            "Lenovo Legion Pro 16ARH7H", "Lenovo Legion 7 16IAH7", "Lenovo Legion Slim 7 16IAH7", "Lenovo LOQ 15IRH8-82XV", "Lenovo LOQ 15APH8-82XW",
+            "Lenovo IdeaPad Gaming 3 15ACH6", "Lenovo IdeaPad Gaming 3 15IHU6", "Lenovo IdeaPad Gaming 3i Gen 7", "Lenovo IdeaPad Gaming 3 15ARH7", "Lenovo IdeaPad Gaming 3 15IAH7",
+            "Lenovo IdeaPad Gaming 3 15IMH05", "Lenovo IdeaPad Gaming 3 15ARH05", "Lenovo IdeaPad L340 Gaming", "Lenovo IdeaPad Y700", "Lenovo IdeaPad Y50",
+
+            // === ACER NITRO & PREDATOR HELIOS / TRITON (70) ===
+            "Acer Nitro V 15 ANV15-51", "Acer Nitro V 16 ANV16-41", "Acer Nitro 5 AN515-55", "Acer Nitro 5 AN515-57", "Acer Nitro 5 AN515-58",
+            "Acer Nitro 5 AN515-45", "Acer Nitro 5 AN515-46", "Acer Nitro 16 AN16-41", "Acer Nitro 17 AN17-51", "Acer Predator Helios 300 PH315",
+            "Acer Predator Helios 300 PH317", "Acer Predator Helios 16 PH16-71", "Acer Predator Helios 18 PH18-71", "Acer Predator Helios Neo 16 PHN16-71", "Acer Predator Triton 300 SE",
+            "Acer Predator Triton 500 SE", "Acer Predator Triton 14 PT14-51", "Acer Predator Triton 16 PT16-51", "Acer Nitro 5 AN515-51", "Acer Nitro 5 AN515-52",
+            "Acer Nitro 5 AN515-54", "Acer Nitro 5 AN515-43", "Acer Nitro 5 AN515-44", "Acer Nitro 5 AN515-55-58X3", "Acer Nitro 5 AN515-57-712D",
+            "Acer Nitro 5 AN515-58-55E6", "Acer Nitro 5 AN515-45-R21A", "Acer Nitro V 15 ANV15-51-5115", "Acer Nitro V 15 ANV15-51-79Y5", "Acer Nitro 16 AN16-41-R1A2",
+            "Acer Predator Helios 300 PH315-53", "Acer Predator Helios 300 PH315-54", "Acer Predator Helios 16 PH16-71-72Z3", "Acer Predator Helios Neo 16 PHN16-71-55M8", "Acer Predator Helios Neo 16 PHN16-71-77M7",
+            "Acer Predator Triton 300 PT315-53", "Acer Predator Helios 500 PH517", "Acer Predator Helios 700 PH717", "Acer Predator Triton 700", "Acer Predator Triton 900"
+        ];
+
+        // FILTER INTERNAL AUTOMATIS REKOMENDASI 500 LAPTOP (100% INSTAN)
+        function suggestLaptopClean() {
+            const input = document.getElementById('laptopNameInput').value.toLowerCase();
+            const datalist = document.getElementById('laptopSuggestions');
+            datalist.innerHTML = "";
+
+            if (input.trim().length < 1) return;
+
+            const filtered = cleanLaptopDatabase.filter(item => item.toLowerCase().includes(input));
+            
+            filtered.slice(0, 15).forEach(laptop => {
+                const option = document.createElement('option');
+                option.value = laptop;
+                datalist.appendChild(option);
+            });
+        }
+
+        // MEMANGGIL DATABASE GAME DARI RAWG API
+        let gameDebounceTimer;
+        function suggestGameRAWGOnly() {
+            clearTimeout(gameDebounceTimer);
+            const query = document.getElementById('gameInput').value;
+            const datalist = document.getElementById('gameSuggestions');
+
+            if (query.trim().length < 2) {
+                datalist.innerHTML = "";
+                return;
+            }
+
+            gameDebounceTimer = setTimeout(async () => {
+                try {
+                    const rawgUrl = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(query)}&page_size=12`;
+                    const response = await fetch(rawgUrl);
+                    const data = await response.json();
+                    
+                    datalist.innerHTML = "";
+                    
+                    if (data && data.results) {
+                        data.results.forEach(game => {
+                            const option = document.createElement('option');
+                            option.value = game.name;
+                            datalist.appendChild(option);
+                        });
+                    }
+                } catch (error) {
+                    console.error("Gagal menarik data dari RAWG API:", error);
+                }
+            }, 350);
+        }
+
+        // FUNGSI UTAMA: SKEMA 1 WATA (PALING EKSTREM HEMAT TOKEN SE-DUNIA)
+        // FUNGSI UTAMA: SKEMA NO-LOG (BIAYA TOKEN OUTPUT HAMPIR NOL)
+        async function checkCompatibilityWithGemini() {
+            const laptopName = document.getElementById('laptopNameInput').value;
+            const userRam = document.getElementById('laptopRam').value;
+            const gameSelected = document.getElementById('gameInput').value;
+            const btn = document.getElementById('btnCheck');
+
+            if (!laptopName || !gameSelected) {
+                alert("Harap isi nama laptop dan judul game terlebih dahulu!");
+                return;
+            }
+
+            btn.innerText = "Gemini AI Sedang Menganalisis...";
+            btn.disabled = true;
+
+            // Prompt paling sempit di dunia, respons AI cuma 1 kata
+            const promptAI = `L:${laptopName},R:${userRam}GB,G:${gameSelected}.(Ally/LegionGo=KUAT).Jawab wajib 1 kata: KUAT atau KURANG KUAT`;
+
+            try {
+                const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${API_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: MODEL_NAME,
+                        messages: [{ role: "user", content: promptAI }],
+                        temperature: 0.1
+                    })
+                });
+
+                const data = await response.json();
+                let aiText = data.choices[0].message.content.trim().toUpperCase();
+
+                // Deteksi hasil akhir murni 1 kata dari AI
+                const statusHasil = aiText.includes("KURANG") ? "KURANG KUAT" : (aiText.includes("KUAT") ? "KUAT" : "KURANG KUAT");
+
+                // Langsung munculkan container hasil dan tembak ke status badge utama
+                document.getElementById('resultContainer').classList.remove('hidden');
+                document.getElementById('resLaptop').innerText = laptopName;
+                document.getElementById('resGame').innerText = gameSelected;
+
+                const statusBadge = document.getElementById('statusBadge');
+                
+                if (statusHasil === "KUAT") {
+                    statusBadge.innerText = "Kuat / Lancar Jaya! 🔥";
+                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
+                } else {
+                    statusBadge.innerText = "Kurang Kuat / Lag ⚠️";
+                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider bg-red-950/80 text-red-400 border border-red-600/60 shadow-lg shadow-red-950/20";
+                }
+
+            } catch (error) {
+                console.error(error);
+                alert("Gagal memproses data. Coba klik sekali lagi.");
+            } finally {
+                btn.innerText = "Cek Kompatibilitas Game";
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
