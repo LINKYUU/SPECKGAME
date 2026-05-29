@@ -15,16 +15,12 @@
             </div>
             <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 text-center whitespace-pre-line leading-relaxed">
                 WAJIB PESAN GAME DI LINK.YU?
-                SELAIN ITU BUKAN TOKO SAYA
+                SELAIN ITU BUKAN TOKO SAYA 
                 WA : 08 777 26 7777 6
             </h1>
             <p class="text-gray-400 text-sm md:text-base">
                 Ketik Sesuai Speck kamu atau Tipe Laptop Kamu dan Nama game kamu 
             </p>
-            
-            <div id="quotaBadge" class="inline-block mt-3 text-xs bg-gray-800 text-indigo-300 px-3 py-1 rounded-md border border-gray-700">
-                Sisa kuota cek spesifikasi hari ini: <span id="quotaCount" class="font-bold text-white">5</span>x
-            </div>
         </header>
 
         <div class="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700/70 mb-8 backdrop-blur-sm">
@@ -70,53 +66,26 @@
                     </div>
 
                     <div class="mt-6 md:mt-0">
-                        <button onclick="checkCompatibilityWithGemini()" id="btnCheck" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-indigo-900/30 active:scale-[0.99] disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed">
-                            <span id="btnText">Cek Kompatibilitas Game</span>
+                        <button onclick="checkCompatibilityOnGoogleIndo()" id="btnCheck" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-indigo-900/30 active:scale-[0.99] flex items-center justify-center gap-2">
+                            <span>🚀</span> Cek Kompatibilitas Otomatis
                         </button>
                     </div>
                 </div>
 
             </div>
         </div>
-
-        <div id="resultContainer" class="hidden bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700/70 transition-all duration-350">
-            <h2 class="text-2xl font-bold mb-4 text-center tracking-tight text-gray-200">Hasil Analisis Spek LINK.YU</h2>
-            
-            <div class="flex flex-col md:flex-row items-center justify-around p-4 rounded-xl bg-gray-950/60 border border-gray-800/80 mb-6">
-                <div class="text-center mb-4 md:mb-0">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Laptop Pembeli</p>
-                    <p id="resLaptop" class="text-base font-bold text-indigo-400 tracking-wide">-</p>
-                </div>
-                <div class="text-2xl text-gray-700 font-black hidden md:block font-mono select-none">VS</div>
-                <div class="text-center">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Game Dicari</p>
-                    <p id="resGame" class="text-base font-bold text-indigo-400 tracking-wide">-</p>
-                </div>
-            </div>
-
-            <div id="statusBadge" class="text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 shadow-inner transition-all duration-300"></div>
-
-            <div class="bg-gray-950/40 border border-gray-700/50 p-5 rounded-xl text-sm">
-                <h3 class="font-bold text-gray-300 mb-2 flex items-center gap-1.5">
-                    <span>🧠</span> Rincian Analisis Hardware:
-                </h3>
-                <p id="aiAnalysisResult" class="text-gray-400 font-mono leading-relaxed whitespace-pre-line text-xs"></p>
-            </div>
-        </div>
+        
+        <p class="text-center text-xs text-gray-500 tracking-wide mt-4">
+            *Sistem akan otomatis membuka Google Search dengan kalimat pencarian bahasa Indonesia secara instan.
+        </p>
     </div>
 
     <script>
-        // ==================== SETTING BASE URL & KEY KAMU DI SINI ====================
-        const BASE_URL = "https://api.koboillm.com/v1"; 
-        const API_KEY  = "sk-VqqZAF9DONhdzLBbkjHtRw"; 
-        const MODEL_NAME = "gemini-2.0-flash-lite"; 
-        
-        // MASUKKAN API KEY RAWG GRATISANMU DI SINI
+        // MASUKKAN API KEY RAWG GRATISANMU DI SINI (Hanya untuk Dropdown Judul Game)
         const RAWG_API_KEY = "158b3858daed4d67af02a839d14ba445"; 
-        const MAX_CEK_HARIAN = 5; // Batasan limit pemakaian harian
         // =============================================================================
 
-        // DATABASE INTERNAL 500 TIPE LAPTOP LOKAL & HANDHELD PC - 100% BERSIH
+        // DATABASE INTERNAL TIPE LAPTOP & HANDHELD PC
         const cleanLaptopDatabase = [
             // === PC HANDHELD GAME CONSOLE (15) ===
             "Lenovo Legion Go Z1 Extreme", "ASUS ROG Ally Z1", "ASUS ROG Ally Z1 Extreme", "ASUS ROG Ally X",
@@ -176,10 +145,8 @@
             "Acer Nitro 5 AN515-58-55E6", "Acer Nitro 5 AN515-45-R21A", "Acer Nitro V 15 ANV15-51-5115", "Acer Nitro V 15 ANV15-51-79Y5", "Acer Nitro 16 AN16-41-R1A2",
             "Acer Predator Helios 300 PH315-53", "Acer Predator Helios 300 PH315-54", "Acer Predator Helios 16 PH16-71-72Z3", "Acer Predator Helios Neo 16 PHN16-71-55M8", "Acer Predator Helios Neo 16 PHN16-71-77M7",
             "Acer Predator Triton 300 PT315-53", "Acer Predator Helios 500 PH517", "Acer Predator Helios 700 PH717", "Acer Predator Triton 700", "Acer Predator Triton 900"
+        
         ];
-
-        // Validasi batasan token harian saat halaman dimuat
-        document.addEventListener("DOMContentLoaded", periksaKuotaHarian);
 
         function suggestLaptopClean() {
             const input = document.getElementById('laptopNameInput').value.toLowerCase();
@@ -222,127 +189,28 @@
             }, 350);
         }
 
-        // ==================== LOGIKA ATUR LIMIT KUOTA CEK HARIAN ====================
-        function dapatkanFormatTanggal() {
-            const d = new Date();
-            return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
-        }
-
-        function periksaKuotaHarian() {
-            const tanggalSekarang = dapatkanFormatTanggal();
-            const tanggalTersimpan = localStorage.getItem("linkyu_limit_date");
-            let totalPemakaian = parseInt(localStorage.getItem("linkyu_use_count")) || 0;
-
-            // Jika hari berganti, reset otomatis pemakaian kembali ke nol
-            if (tanggalTersimpan !== tanggalSekarang) {
-                localStorage.setItem("linkyu_limit_date", tanggalSekarang);
-                localStorage.setItem("linkyu_use_count", 0);
-                totalPemakaian = 0;
-            }
-
-            const sisaKuota = MAX_CEK_HARIAN - totalPemakaian;
-            const quotaCountEl = document.getElementById("quotaCount");
-            const btnCheck = document.getElementById("btnCheck");
-            const quotaBadge = document.getElementById("quotaBadge");
-
-            if (sisaKuota <= 0) {
-                quotaCountEl.innerText = "0";
-                quotaBadge.className = "inline-block mt-3 text-xs bg-red-950/40 text-red-400 px-3 py-1 rounded-md border border-red-900/50";
-                btnCheck.disabled = true;
-                btnCheck.innerText = "Kuota Cek Hari Ini Habis, Besok Reset Kembali!";
-                return false;
-            } else {
-                quotaCountEl.innerText = sisaKuota;
-                quotaBadge.className = "inline-block mt-3 text-xs bg-gray-800 text-indigo-300 px-3 py-1 rounded-md border border-gray-700";
-                return true;
-            }
-        }
-
-        async function checkCompatibilityWithGemini() {
-            // Validasi batasan limit sebelum memproses API
-            if (!periksaKuotaHarian()) return;
-
+        // ==================== FIX MUTLAK: JEMBATAN OTOMATIS BAHASA INDONESIA ====================
+        function checkCompatibilityOnGoogleIndo() {
             const laptopName = document.getElementById('laptopNameInput').value;
             const userRam = document.getElementById('laptopRam').value;
             const gameSelected = document.getElementById('gameInput').value;
-            const btn = document.getElementById('btnCheck');
 
             if (!laptopName || !gameSelected) {
                 alert("Harap isi nama laptop dan judul game terlebih dahulu!");
                 return;
             }
 
-            btn.innerText = "Gemini AI Sedang Menganalisis...";
-            btn.disabled = true;
+            // Meracik kalimat murni Bahasa Indonesia yang langsung memicu hasil spesifikasi lokal
+            const kalimatPencarian = `spesifikasi minimum game ${gameSelected} untuk laptop ${laptopName} RAM ${userRam} GB kuat atau tidak`;
 
-            const promptAI = `Tugas: Analisis kecocokan spesifikasi laptop berikut untuk menjalankan game.
-Laptop: ${laptopName}
-RAM: ${userRam} GB
-Game: ${gameSelected}
+            // Enkripsi teks agar aman dibaca oleh browser
+            const urlFormatAman = encodeURIComponent(kalimatPencarian);
+            
+            // Mengarahkan ke Google Search resmi
+            const linkGoogleOtomatis = `https://www.google.com/search?q=${urlFormatAman}`;
 
-Aturan Penting Kategori Hasil:
-- "KUAT": Jika spesifikasi laptop di atas syarat rekomendasi game dan dijamin lancar (Tipe Handheld seperti ROG Ally/Legion Go Z1 Extreme wajib KUAT untuk game menengah).
-- "LAG": Jika laptop me-load game tapi mepet syarat minimum, patah-patah, drop FPS, atau RAM/VRAM pas-pasan.
-- "TIDAK BISA": Jika laptop Celeron, i3 lama, pakai Intel HD/UHD bawaan untuk game AAA berat, atau RAM di bawah syarat minimum mutlak.
-
-Jawab kaku dalam format JSON saja tanpa markdown/bintang:
-{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini dan jelaskan secara teknis 1-2 kalimat kenapa masuk kategori tersebut"}`;
-
-            try {
-                const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: MODEL_NAME,
-                        messages: [{ role: "user", content: promptAI }],
-                        temperature: 0.1
-                    })
-                });
-
-                const data = await response.json();
-                let aiText = data.choices[0].message.content.trim();
-
-                aiText = aiText.replace(/```json/g, "").replace(/```/g, "").trim();
-                
-                const result = JSON.parse(aiText);
-                const statusHasil = result.status.toUpperCase();
-
-                document.getElementById('resultContainer').classList.remove('hidden');
-                document.getElementById('resLaptop').innerText = laptopName;
-                document.getElementById('resGame').innerText = gameSelected;
-                document.getElementById('aiAnalysisResult').innerText = result.analisis;
-
-                const statusBadge = document.getElementById('statusBadge');
-                
-                if (statusHasil.includes("KUAT") && !statusHasil.includes("TIDAK") && !statusHasil.includes("LAG")) {
-                    statusBadge.innerText = "Kuat - BISA 🔥";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
-                } else if (statusHasil.includes("LAG")) {
-                    statusBadge.innerText = "PATAH / LAG - GAK DISARANKAN GAK TANGGUNG JAWAB KALAU GAK BISA ⚠️";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-amber-950/80 text-amber-400 border border-amber-600/60 shadow-lg shadow-amber-950/20";
-                } else {
-                    statusBadge.innerText = "Tidak Bisa / Spesifikasi Kurang ❌";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-red-950/80 text-red-400 border border-red-600/60 shadow-lg shadow-red-950/20";
-                }
-
-                // TAMBAH HITUNGAN USE-COUNT JIKA PROSES BERHASIL
-                let pemakaianSekarang = parseInt(localStorage.getItem("linkyu_use_count")) || 0;
-                localStorage.setItem("linkyu_use_count", pemakaianSekarang + 1);
-                periksaKuotaHarian();
-
-            } catch (error) {
-                console.error(error);
-                alert("Gagal memproses data atau format AI tidak sesuai. Silakan klik sekali lagi.");
-            } finally {
-                // Hanya aktifkan kembali tombol jika sisa kuota harian masih mencukupi
-                if ((parseInt(localStorage.getItem("linkyu_use_count")) || 0) < MAX_CEK_HARIAN) {
-                    btn.innerText = "Cek Kompatibilitas Game";
-                    btn.disabled = false;
-                }
-            }
+            // Langsung buka tab baru dan Google otomatis mencari sendiri secara instan!
+            window.open(linkGoogleOtomatis, '_blank');
         }
     </script>
 </body>
