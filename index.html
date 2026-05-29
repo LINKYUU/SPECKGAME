@@ -19,7 +19,7 @@
                 WA : 08 777 26 7777 6
             </h1>
             <p class="text-gray-400 text-sm md:text-base">
-                Ketik Seuai Speck kamu atau Tipe Laptop Kamu dan Nama game kamu 
+                Ketik Sesuai Speck kamu atau Tipe Laptop Kamu dan Nama game kamu 
             </p>
         </header>
 
@@ -40,7 +40,7 @@
                     <div>
                         <label class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">Kapasitas RAM Laptop</label>
                         <select id="laptopRam" class="w-full bg-gray-700 border border-gray-600 rounded-xl px-3 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition duration-150">
-                            <option value="4">2 GB</option>
+                            <option value="2">2 GB</option>
                             <option value="4">4 GB</option>
                             <option value="8" selected>8 GB</option>
                             <option value="12">12 GB</option>
@@ -48,7 +48,7 @@
                             <option value="24">24 GB</option>
                             <option value="32">32 GB</option>
                             <option value="64">64 GB</option>
-                            <option value="64">128 GB</option>
+                            <option value="128">128 GB</option>
                         </select>
                     </div>
                 </div>
@@ -94,6 +94,7 @@
 
             <div class="bg-gray-950/40 border border-gray-700/50 p-5 rounded-xl text-sm">
                 <h3 class="font-bold text-gray-300 mb-2 flex items-center gap-1.5">
+                    <span>🧠</span> Rincian Analisis Hardware:
                 </h3>
                 <p id="aiAnalysisResult" class="text-gray-400 font-mono leading-relaxed whitespace-pre-line text-xs"></p>
             </div>
@@ -128,7 +129,7 @@
             "ASUS ROG Strix GL702", "ASUS ROG Strix GL703", "ASUS ROG Strix GL753", "ASUS ROG Zephyrus GX501", "ASUS ROG Zephyrus GX531",
             "ASUS ROG Zephyrus GX701", "ASUS ROG M GU502", "ASUS ROG Zephyrus S GX502", "ASUS ROG Zephyrus S GX701", "ASUS ROG Strix G512",
             "ASUS ROG Strix G712", "ASUS ROG Strix SCAR III", "ASUS ROG Strix Hero III", "ASUS ROG Zephyrus G GA502", "ASUS ROG Zephyrus G15 GA503",
-            "ASUS ROG Chimera G703", "ASUS ROG Strix GL12 CX", "ASUS ROG Strix GT15", "ASUS ROG Strix G35", "ASUS ROG Zephyrus M15",
+            "ASUS Chimera G703", "ASUS ROG Strix GL12 CX", "ASUS ROG Strix GT15", "ASUS ROG Strix G35", "ASUS ROG Zephyrus M15",
             "ASUS ROG Strix G15 Advantage Edition", "ASUS ROG Strix SCAR 17 X3D", "ASUS ROG Strix G16 G614JIR", "ASUS ROG Zephyrus G16 GU605MV", "ASUS ROG Flow X13 GV302XV",
             "ASUS ROG Strix GL503VD", "ASUS ROG Strix GL503GE", "ASUS ROG Strix GL703VD", "ASUS ROG Zephyrus G14 GA401IV", "ASUS ROG Zephyrus G14 GA401IU",
             "ASUS ROG Strix G513IC", "ASUS ROG Strix G513IE", "ASUS ROG Strix G513IH", "ASUS ROG Strix G713QE", "ASUS ROG Strix SCAR 15 G532",
@@ -172,16 +173,12 @@
             "Acer Predator Triton 300 PT315-53", "Acer Predator Helios 500 PH517", "Acer Predator Helios 700 PH717", "Acer Predator Triton 700", "Acer Predator Triton 900"
         ];
 
-        // FILTER INTERNAL AUTOMATIS REKOMENDASI 500 LAPTOP (100% INSTAN)
         function suggestLaptopClean() {
             const input = document.getElementById('laptopNameInput').value.toLowerCase();
             const datalist = document.getElementById('laptopSuggestions');
             datalist.innerHTML = "";
-
             if (input.trim().length < 1) return;
-
             const filtered = cleanLaptopDatabase.filter(item => item.toLowerCase().includes(input));
-            
             filtered.slice(0, 15).forEach(laptop => {
                 const option = document.createElement('option');
                 option.value = laptop;
@@ -189,26 +186,21 @@
             });
         }
 
-        // MEMANGGIL DATABASE GAME DARI RAWG API
         let gameDebounceTimer;
         function suggestGameRAWGOnly() {
             clearTimeout(gameDebounceTimer);
             const query = document.getElementById('gameInput').value;
             const datalist = document.getElementById('gameSuggestions');
-
             if (query.trim().length < 2) {
                 datalist.innerHTML = "";
                 return;
             }
-
             gameDebounceTimer = setTimeout(async () => {
                 try {
                     const rawgUrl = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(query)}&page_size=12`;
                     const response = await fetch(rawgUrl);
                     const data = await response.json();
-                    
                     datalist.innerHTML = "";
-                    
                     if (data && data.results) {
                         data.results.forEach(game => {
                             const option = document.createElement('option');
@@ -222,8 +214,6 @@
             }, 350);
         }
 
-        // FUNGSI UTAMA: SKEMA 1 WATA (PALING EKSTREM HEMAT TOKEN SE-DUNIA)
-        // FUNGSI UTAMA: SKEMA NO-LOG (BIAYA TOKEN OUTPUT HAMPIR NOL)
         async function checkCompatibilityWithGemini() {
             const laptopName = document.getElementById('laptopNameInput').value;
             const userRam = document.getElementById('laptopRam').value;
@@ -238,8 +228,19 @@
             btn.innerText = "Gemini AI Sedang Menganalisis...";
             btn.disabled = true;
 
-            // Prompt paling sempit di dunia, respons AI cuma 1 kata
-            const promptAI = `L:${laptopName},R:${userRam}GB,G:${gameSelected}.(Ally/LegionGo=KUAT).Jawab wajib 1 kata: KUAT atau KURANG KUAT`;
+            // PROMPT FIX GANDA: Memaksa AI membagi hasil ke 3 kategori hukum tetap (KUAT, LAG, TIDAK BISA)
+            const promptAI = `Tugas: Analisis kecocokan spesifikasi laptop berikut untuk menjalankan game.
+Laptop: ${laptopName}
+RAM: ${userRam} GB
+Game: ${gameSelected}
+
+Aturan Penting Kategori Hasil:
+- "KUAT": Jika spesifikasi laptop di atas syarat rekomendasi game dan dijamin lancar (Tipe Handheld seperti ROG Ally/Legion Go Z1 Extreme wajib KUAT untuk game menengah).
+- "LAG": Jika laptop me-load game tapi mepet syarat minimum, patah-patah, drop FPS, atau RAM/VRAM pas-pasan.
+- "TIDAK BISA": Jika laptop Celeron, i3 lama, pakai Intel HD/UHD bawaan untuk game AAA berat, atau RAM di bawah syarat minimum mutlak.
+
+Jawab kaku dalam format JSON saja tanpa markdown/bintang:
+{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini dan jelaskan secara teknis 1-2 kalimat kenapa masuk kategori tersebut"}`;
 
             try {
                 const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
@@ -256,29 +257,35 @@
                 });
 
                 const data = await response.json();
-                let aiText = data.choices[0].message.content.trim().toUpperCase();
+                let aiText = data.choices[0].message.content.trim();
 
-                // Deteksi hasil akhir murni 1 kata dari AI
-                const statusHasil = aiText.includes("KURANG") ? "KURANG KUAT" : (aiText.includes("KUAT") ? "KUAT" : "KURANG KUAT");
+                aiText = aiText.replace(/```json/g, "").replace(/```/g, "").trim();
+                
+                const result = JSON.parse(aiText);
+                const statusHasil = result.status.toUpperCase();
 
-                // Langsung munculkan container hasil dan tembak ke status badge utama
                 document.getElementById('resultContainer').classList.remove('hidden');
                 document.getElementById('resLaptop').innerText = laptopName;
                 document.getElementById('resGame').innerText = gameSelected;
+                document.getElementById('aiAnalysisResult').innerText = result.analisis;
 
                 const statusBadge = document.getElementById('statusBadge');
                 
-                if (statusHasil === "KUAT") {
+                // LOGIKA BARU 3 KATEGORI (KUAT, LAG, TIDAK BISA)
+                if (statusHasil.includes("KUAT") && !statusHasil.includes("TIDAK") && !statusHasil.includes("LAG")) {
                     statusBadge.innerText = "Kuat / Lancar Jaya! 🔥";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
+                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
+                } else if (statusHasil.includes("LAG")) {
+                    statusBadge.innerText = "Bisa Main Tapi Lag / Patah-Patah ⚠️";
+                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-amber-950/80 text-amber-400 border border-amber-600/60 shadow-lg shadow-amber-950/20";
                 } else {
-                    statusBadge.innerText = "Kurang Kuat / Lag ⚠️";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider bg-red-950/80 text-red-400 border border-red-600/60 shadow-lg shadow-red-950/20";
+                    statusBadge.innerText = "Tidak Bisa / Spesifikasi Kurang ❌";
+                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-red-950/80 text-red-400 border border-red-600/60 shadow-lg shadow-red-950/20";
                 }
 
             } catch (error) {
                 console.error(error);
-                alert("Gagal memproses data. Coba klik sekali lagi.");
+                alert("Gagal memproses data atau format AI tidak sesuai. Silakan klik sekali lagi.");
             } finally {
                 btn.innerText = "Cek Kompatibilitas Game";
                 btn.disabled = false;
