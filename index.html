@@ -318,7 +318,7 @@ Jawab kaku dalam format JSON saja tanpa markdown/bintang:
                 const statusBadge = document.getElementById('statusBadge');
                 
                 if (statusHasil.includes("KUAT") && !statusHasil.includes("TIDAK") && !statusHasil.includes("LAG")) {
-                    statusBadge.innerText = "Kuat / Lancar Jaya! 🔥";
+                    statusBadge.innerText = "Kuat - BISA 🔥";
                     statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
                 } else if (statusHasil.includes("LAG")) {
                     statusBadge.innerText = "PATAH / LAG - GAK DISARANKAN GAK TANGGUNG JAWAB KALAU GAK BISA ⚠️";
