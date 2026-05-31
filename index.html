@@ -350,22 +350,26 @@ Jawab kaku dalam format JSON saja tanpa markdown/bintang/backtick:
 
                 aiText = aiText.replace(/```json/g, "").replace(/```/g, "").trim();
                 
-                const result = JSON.parse(aiText);
+               const result = JSON.parse(aiText);
                 const statusHasil = result.status.toUpperCase();
+                const vgaLaptop = result.vga || "Tidak terdeteksi"; // Mengambil nama VGA dari AI
 
                 document.getElementById('resultContainer').classList.remove('hidden');
                 document.getElementById('resLaptop').innerText = laptopName;
                 document.getElementById('resGame').innerText = gameSelected;
-                document.getElementById('aiAnalysisResult').innerText = result.analisis;
+                
+                // Teks rincian otomatis diisi secara hemat tanpa kalimat AI yang panjang
+                document.getElementById('aiAnalysisResult').innerText = `VGA Terdeteksi: ${vgaLaptop}\nStatus Kompatibilitas: Laptop ini masuk dalam kategori ${statusHasil} untuk menjalankan game ${gameSelected}.`;
 
                 const statusBadge = document.getElementById('statusBadge');
                 
+                // LOGIKA WARNA BADGE (Tetap sama seperti kodinganmu)
                 if (statusHasil.includes("KUAT") && !statusHasil.includes("TIDAK") && !statusHasil.includes("LAG")) {
                     statusBadge.innerText = "Kuat / Lancar Jaya! 🔥";
                     statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
                 } else if (statusHasil.includes("LAG")) {
-                    statusBadge.innerText = "Lag / Patah-Patah ⚠️\nTIDAK TANGGUNG JAWAB KALAU GAME GAK BISA";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-amber-950/80 text-amber-400 border border-amber-600/60 shadow-lg shadow-amber-950/20";
+                    statusBadge.innerText = "Bisa Main Tapi Lag /\nPatah-Patah ⚠️";
+                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-amber-950/80 text-amber-400 border border-amber-600/60 shadow-lg shadow-amber-950/20 whitespace-pre-line";
                 } else {
                     statusBadge.innerText = "Tidak Bisa / Spesifikasi Kurang ❌";
                     statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-red-950/80 text-red-400 border border-red-600/60 shadow-lg shadow-red-950/20";
