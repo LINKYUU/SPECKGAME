@@ -297,29 +297,39 @@
 
             btn.innerText = " Sedang Menganalisis DI LINK.YU...";
 
-           const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game secara akurat.
+          let bagianSyaratGame = "";
+            
+            if (gameMinSpecs.includes("Tidak ada data") || gameMinSpecs.trim() === "") {
+                // Jika RAWG kosong, paksa AI pakai otak internalnya secara mutlak
+                bagianSyaratGame = `[PERINTAH UTMA]
+Data spesifikasi dari API kosong. Kamu WAJIB menggunakan database pengetahuan internal kamu sendiri untuk menganalisis spesifikasi sistem, vram, dan RAM yang dibutuhkan oleh game "${gameSelected}".`;
+            } else {
+                // Jika RAWG ada isinya, masukkan ke prompt
+                bagianSyaratGame = `[TEKS MENTAH SYARAT GAME DARI API]
+Teks Minimum: "${gameMinSpecs.replace(/"/g, "'")}"
+Teks Rekomendasi: "${gameRecSpecs.replace(/"/g, "'")}"`;
+            }
+
+            // PROMPT FINAL YANG DIKIRIM
+            const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game secara akurat.
 
 [HARDWARE LAPTOP PEMBELI]
 Nama Laptop: ${laptopName}
 RAM Laptop: ${userRam} GB
 
-[TEKS MENTAH SYARAT GAME DARI RAWG API]
-Teks Minimum: "${gameMinSpecs.replace(/"/g, "'")}"
-Teks Rekomendasi: "${gameRecSpecs.replace(/"/g, "'")}"
+${bagianSyaratGame}
 
-Aturan Penting & Antisipasi Data Kosong:
-1. Jika teks mentah dari RAWG di atas berisi "Tidak ada data spesifikasi", kamu WAJIB menggunakan pengetahuan internal kamu sendiri mengenai spesifikasi asli dari game "${gameSelected}" (Contoh: Jika pembeli mengetik singkatan seperti "fifa 26", kamu harus tahu itu adalah game sepak bola modern kelas menengah-berat seperti EA Sports FC).
-2. Ekstrak komponen VGA bawaan dari nama laptop "${laptopName}".
-3. Bandingkan VGA dan RAM laptop pembeli dengan kebutuhan game tersebut.
+Aturan Analisis:
+1. Identifikasi VGA/GPU asli yang tertanam pada laptop "${laptopName}" (Contoh: jika tertulis gtx 980, berarti VGA-nya NVIDIA GeForce GTX 980).
+2. Nilai apakah hardware tersebut (CPU & VGA) kuat, lag, atau tidak bisa untuk game "${gameSelected}" rilisan terbaru. JANGAN PERNAH berasumsi semua game pasti lancar jika data API kosong!
 
 Aturan Kategori Status Hasil:
-- "KUAT": Jika spesifikasi VGA dan RAM laptop berada di atas syarat rekomendasi game dan dijamin lancar.
-- "LAG": Jika spesifikasi laptop pas-pasan di syarat minimum, RAM mepet, atau berpotensi drop FPS/patah-patah (Catatan: i3 Gen 10 + GTX 980 untuk game rilisan terbaru seperti tahun 2025/2026 kemungkinan besar akan LAG/berat di settingan tertentu).
-- "TIDAK BISA": Jika VGA laptop di bawah minimum syarat game, CPU terlalu tua, atau RAM kurang dari minimum mutlak game.
+- "KUAT": Jika spesifikasi laptop di atas syarat game dan dijamin lancar fps tinggi.
+- "LAG": Jika laptop mepet syarat minimum, atau komponennya seri tua (seperti GTX 980 atau i3 lama) yang dipaksa menjalankan game berat/terbaru sehingga pasti patah-patah/drop FPS.
+- "TIDAK BISA": Jika VGA/RAM berada di bawah syarat minimum mutlak game.
 
 Jawab kaku dalam format JSON saja tanpa markdown/bintang/backtick:
 {"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini terlebih dahulu, lalu jelaskan perbandingan teknisnya dengan kebutuhan game tersebut secara nyata dalam 1-2 kalimat"}`;
-            
             try {
                 const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
                     method: "POST",
