@@ -297,7 +297,7 @@
 
             btn.innerText = " Sedang Menganalisis DI LINK.YU...";
 
-            const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game dengan membedakan komponen secara teliti berdasarkan teks mentah dari RAWG API berikut.
+           const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game secara akurat.
 
 [HARDWARE LAPTOP PEMBELI]
 Nama Laptop: ${laptopName}
@@ -307,18 +307,19 @@ RAM Laptop: ${userRam} GB
 Teks Minimum: "${gameMinSpecs.replace(/"/g, "'")}"
 Teks Rekomendasi: "${gameRecSpecs.replace(/"/g, "'")}"
 
-Aturan Analisis (Wajib Ekstrak Data Dari Teks Mentah Di Atas):
-1. Cari tahu varian VGA/GPU bawaan dari "${laptopName}" (misal: jika ROG Ally berarti Radeon 780M, jika Nitro V15 berarti RTX 2050/4050, dst).
-2. Baca teks mentah syarat game, temukan komponen MINIMUM VIDEO CARD / GRAPHICS dan MINIMUM RAM yang diminta.
-3. Bandingkan VGA dan RAM laptop pembeli dengan syarat game tersebut.
+Aturan Penting & Antisipasi Data Kosong:
+1. Jika teks mentah dari RAWG di atas berisi "Tidak ada data spesifikasi", kamu WAJIB menggunakan pengetahuan internal kamu sendiri mengenai spesifikasi asli dari game "${gameSelected}" (Contoh: Jika pembeli mengetik singkatan seperti "fifa 26", kamu harus tahu itu adalah game sepak bola modern kelas menengah-berat seperti EA Sports FC).
+2. Ekstrak komponen VGA bawaan dari nama laptop "${laptopName}".
+3. Bandingkan VGA dan RAM laptop pembeli dengan kebutuhan game tersebut.
 
 Aturan Kategori Status Hasil:
 - "KUAT": Jika spesifikasi VGA dan RAM laptop berada di atas syarat rekomendasi game dan dijamin lancar.
-- "LAG": Jika spesifikasi laptop pas-pasan di syarat minimum, RAM mepet, atau berpotensi drop FPS/patah-patah.
-- "TIDAK BISA": Jika VGA laptop di bawah minimum syarat game (seperti Intel HD/UHD untuk game berat), CPU terlalu tua, atau RAM kurang dari minimum mutlak game.
+- "LAG": Jika spesifikasi laptop pas-pasan di syarat minimum, RAM mepet, atau berpotensi drop FPS/patah-patah (Catatan: i3 Gen 10 + GTX 980 untuk game rilisan terbaru seperti tahun 2025/2026 kemungkinan besar akan LAG/berat di settingan tertentu).
+- "TIDAK BISA": Jika VGA laptop di bawah minimum syarat game, CPU terlalu tua, atau RAM kurang dari minimum mutlak game.
 
 Jawab kaku dalam format JSON saja tanpa markdown/bintang/backtick:
-{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini terlebih dahulu, lalu jelaskan perbandingan teknisnya hasil ekstraksi dari teks mentah syarat game tadi dalam 1-2 kalimat"}`;
+{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini terlebih dahulu, lalu jelaskan perbandingan teknisnya dengan kebutuhan game tersebut secara nyata dalam 1-2 kalimat"}`;
+            
             try {
                 const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
                     method: "POST",
