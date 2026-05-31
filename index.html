@@ -329,8 +329,9 @@ Aturan Kategori Status Hasil:
 - "TIDAK BISA": Jika VGA/RAM berada di bawah syarat minimum mutlak game.
 
 Jawab kaku dalam format JSON saja tanpa markdown/bintang/backtick:
-{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini "}`;
+{"status": "KUAT atau LAG atau TIDAK BISA", "vga": "Sebutkan hanya tipe VGA laptop ini secara singkat"}`;
             
+            try {
                 const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
                     method: "POST",
                     headers: {
