@@ -297,21 +297,28 @@
 
             btn.innerText = " Sedang Menganalisis DI LINK.YU...";
 
-            const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game berdasarkan data pembanding di bawah ini.
-Laptop: ${laptopName}
-RAM: ${userRam} GB
-Game Dicari: ${gameSelected}
-Syarat Minimum Game Asli: ${gameMinSpecs}
-Syarat Rekomendasi Game Asli: ${gameRecSpecs}
+            const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game dengan membedakan komponen secara teliti berdasarkan teks mentah dari RAWG API berikut.
 
-Aturan Penting Kategori Hasil:
-- "KUAT": Jika spesifikasi varian VGA dan CPU bawaan laptop berada di atas syarat rekomendasi game dan dijamin lancar (Tipe Handheld seperti ROG Ally/Legion Go Z1 Extreme wajib KUAT untuk game menengah).
-- "LAG": Jika spesifikasi laptop berada di antara syarat minimum dan rekomendasi, atau mepet di minimum yang berpotensi menyebabkan drop FPS, patah-patah, atau bottleneck RAM/VRAM.
-- "TIDAK BISA": Jika laptop Celeron, i3 lama, menggunakan Intel HD/UHD bawaan untuk game AAA berat, atau RAM di bawah syarat minimum mutlak game.
+[HARDWARE LAPTOP PEMBELI]
+Nama Laptop: ${laptopName}
+RAM Laptop: ${userRam} GB
+
+[TEKS MENTAH SYARAT GAME DARI RAWG API]
+Teks Minimum: "${gameMinSpecs.replace(/"/g, "'")}"
+Teks Rekomendasi: "${gameRecSpecs.replace(/"/g, "'")}"
+
+Aturan Analisis (Wajib Ekstrak Data Dari Teks Mentah Di Atas):
+1. Cari tahu varian VGA/GPU bawaan dari "${laptopName}" (misal: jika ROG Ally berarti Radeon 780M, jika Nitro V15 berarti RTX 2050/4050, dst).
+2. Baca teks mentah syarat game, temukan komponen MINIMUM VIDEO CARD / GRAPHICS dan MINIMUM RAM yang diminta.
+3. Bandingkan VGA dan RAM laptop pembeli dengan syarat game tersebut.
+
+Aturan Kategori Status Hasil:
+- "KUAT": Jika spesifikasi VGA dan RAM laptop berada di atas syarat rekomendasi game dan dijamin lancar.
+- "LAG": Jika spesifikasi laptop pas-pasan di syarat minimum, RAM mepet, atau berpotensi drop FPS/patah-patah.
+- "TIDAK BISA": Jika VGA laptop di bawah minimum syarat game (seperti Intel HD/UHD untuk game berat), CPU terlalu tua, atau RAM kurang dari minimum mutlak game.
 
 Jawab kaku dalam format JSON saja tanpa markdown/bintang/backtick:
-{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini terlebih dahulu, lalu jelaskan perbandingan teknisnya dengan syarat game dalam 1-2 kalimat"}`;
-
+{"status": "KUAT atau LAG atau TIDAK BISA", "analisis": "Sebutkan nama VGA laptop ini terlebih dahulu, lalu jelaskan perbandingan teknisnya hasil ekstraksi dari teks mentah syarat game tadi dalam 1-2 kalimat"}`;
             try {
                 const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
                     method: "POST",
