@@ -178,20 +178,18 @@
 
             if (level === "high" && userRam >= 16) {
                 statusTitle = "KUAT.";
-                warnaTitle = "text-blue"; 
+                warnaTitle = "text-green-600";
                 mainParagraph = `Laptop Anda memiliki spesifikasi <a href="#" class="text-[#1a0dab] underline">${laptopName}</a> dengan RAM ${userRam}GB, yang sudah jauh melampaui persyaratan minimum untuk game <a href="#" class="text-[#1a0dab] underline">${gameSelected}</a>.`;
                 bulletPoints = `
-                    <p class="mt-4 mb-3 text-gray-800">Jika Anda ingin bermain dengan kualitas grafis dan performa yang lebih maksimal:</p>
                     <ul class="list-disc pl-5 space-y-3 text-gray-800">
                     </ul>
                 `;
             } 
             else if (level === "medium" || (level === "high" && userRam < 16)) {
                 statusTitle = "CUKUP KUAT.";
-                warnaTitle = "text-green";
+                warnaTitle = "text-blue-600";
                 mainParagraph = `Laptop Anda memiliki spesifikasi <a href="#" class="text-[#1a0dab] underline">${laptopName}</a> dengan RAM ${userRam}GB. Spesifikasi ini sudah memenuhi standar untuk menjalankan game <a href="#" class="text-[#1a0dab] underline">${gameSelected}</a>.`;
                 bulletPoints = `
-                    <p class="mt-4 mb-3 text-gray-800">Untuk mendapatkan pengalaman bermain yang paling stabil, pertimbangkan hal berikut:</p>
                     <ul class="list-disc pl-5 space-y-3 text-gray-800">
                     </ul>
                 `;
@@ -201,7 +199,6 @@
                 warnaTitle = "text-red-600";
                 mainParagraph = `Laptop Anda dengan spesifikasi <a href="#" class="text-[#1a0dab] underline">${laptopName}</a> dan RAM ${userRam}GB, sepertinya akan kesulitan untuk memenuhi persyaratan minimum game <a href="#" class="text-[#1a0dab] underline">${gameSelected}</a>.`;
                 bulletPoints = `
-                    <p class="mt-4 mb-3 text-gray-800">Solusi yang bisa Anda coba:</p>
                     <ul class="list-disc pl-5 space-y-3 text-gray-800">
                     </ul>
                 `;
