@@ -13,12 +13,13 @@
             <div class="inline-block bg-indigo-600/10 border border-indigo-500/20 px-4 py-1.5 rounded-full text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-3 shadow-sm">
                 LINK.YU Catalog System
             </div>
-            <h1 class="text-3xl md:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 text-center whitespace-pre-line leading-relaxed">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-4 text-center whitespace-pre-line leading-relaxed">
                 WAJIB PESAN GAME DI LINK.YU
-                WA : 08 777 26 7777 6
+                SELAIN ITU BUKAN TOKO SAYA 
+                WA : 08 777 26 77776
             </h1>
             <p class="text-gray-400 text-sm md:text-base">
-                Ketik Sesuai Speck atau Tipe Laptop dan Nama game
+                Ketik Sesuai Speck kamu atau Tipe Laptop Kamu dan Nama game kamu 
             </p>
         </header>
 
@@ -65,56 +66,26 @@
                     </div>
 
                     <div class="mt-6 md:mt-0">
-                        <button onclick="checkCompatibilityWithGemini()" id="btnCheck" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-indigo-900/30 active:scale-[0.99] disabled:from-gray-700 disabled:to-gray-800 disabled:text-gray-500 disabled:cursor-not-allowed">
-                            Cek Kompatibilitas Game
+                        <button onclick="checkCompatibilityOnGoogleIndo()" id="btnCheck" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-xl transition duration-200 shadow-lg shadow-indigo-900/30 active:scale-[0.99] flex items-center justify-center gap-2">
+                            <span>🚀</span> Cek Kompatibilitas Otomatis
                         </button>
-                        <p id="quotaInfo" class="text-center text-xs text-gray-500 mt-2 font-mono"></p>
                     </div>
                 </div>
 
             </div>
         </div>
-
-        <div id="resultContainer" class="hidden bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700/70 transition-all duration-350">
-            <h2 class="text-2xl font-bold mb-4 text-center tracking-tight text-gray-200">Hasil Analisis Spek LINK.YU</h2>
-            
-            <div class="flex flex-col md:flex-row items-center justify-around p-4 rounded-xl bg-gray-950/60 border border-gray-800/80 mb-6">
-                <div class="text-center mb-4 md:mb-0">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Laptop Pembeli</p>
-                    <p id="resLaptop" class="text-base font-bold text-indigo-400 tracking-wide">-</p>
-                </div>
-                <div class="text-2xl text-gray-700 font-black hidden md:block font-mono select-none">VS</div>
-                <div class="text-center">
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold mb-1">Game Dicari</p>
-                    <p id="resGame" class="text-base font-bold text-indigo-400 tracking-wide">-</p>
-                </div>
-            </div>
-
-            <div id="statusBadge" class="text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 shadow-inner transition-all duration-300"></div>
-
-            <div class="bg-gray-950/40 border border-gray-700/50 p-5 rounded-xl text-sm">
-                <h3 class="font-bold text-gray-300 mb-2 flex items-center gap-1.5">
-                    <span>🧠</span> Rincian Analisis Hardware:
-                </h3>
-                <p id="aiAnalysisResult" class="text-gray-400 font-mono leading-relaxed whitespace-pre-line text-xs"></p>
-            </div>
-        </div>
+        
+        <p class="text-center text-xs text-gray-500 tracking-wide mt-4">
+            *Sistem akan otomatis membuka Google Search dengan kalimat pencarian bahasa Indonesia secara instan.
+        </p>
     </div>
 
     <script>
-        // ==================== SETTING BASE URL & KEY KAMU DI SINI ====================
-        const BASE_URL = "https://api.koboillm.com/v1"; 
-        const API_KEY  = "sk-VqqZAF9DONhdzLBbkjHtRw"; 
-        const MODEL_NAME = "openai/gpt-5-nano"; 
-        
-        // MASUKKAN API KEY RAWG GRATISANMU DI SINI
+        // MASUKKAN API KEY RAWG GRATISANMU DI SINI (Hanya untuk Dropdown Judul Game)
         const RAWG_API_KEY = "158b3858daed4d67af02a839d14ba445"; 
-        
-        // BATAS MAKSIMAL PENCARIAN PER HARI
-        const MAX_DAILY_SEARCH = 5;
         // =============================================================================
 
-        // DATABASE INTERNAL 500 TIPE LAPTOP LOKAL & HANDHELD PC - 100% BERSIH
+        // DATABASE INTERNAL TIPE LAPTOP & HANDHELD PC
         const cleanLaptopDatabase = [
             // === PC HANDHELD GAME CONSOLE (15) ===
             "Lenovo Legion Go Z1 Extreme", "ASUS ROG Ally Z1", "ASUS ROG Ally Z1 Extreme", "ASUS ROG Ally X",
@@ -174,41 +145,8 @@
             "Acer Nitro 5 AN515-58-55E6", "Acer Nitro 5 AN515-45-R21A", "Acer Nitro V 15 ANV15-51-5115", "Acer Nitro V 15 ANV15-51-79Y5", "Acer Nitro 16 AN16-41-R1A2",
             "Acer Predator Helios 300 PH315-53", "Acer Predator Helios 300 PH315-54", "Acer Predator Helios 16 PH16-71-72Z3", "Acer Predator Helios Neo 16 PHN16-71-55M8", "Acer Predator Helios Neo 16 PHN16-71-77M7",
             "Acer Predator Triton 300 PT315-53", "Acer Predator Helios 500 PH517", "Acer Predator Helios 700 PH717", "Acer Predator Triton 700", "Acer Predator Triton 900"
+        
         ];
-
-        // FUNGSI CEK DAN AMBIL JUMLAH SISA KUOTA HARI INI
-        function getSearchQuotaData() {
-            const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-            let data = localStorage.getItem('linkyu_search_quota');
-            
-            if (!data) {
-                return { date: today, count: 0 };
-            }
-            
-            let parsed = JSON.parse(data);
-            // Jika hari sudah berganti, reset hitungan jadi 0
-            if (parsed.date !== today) {
-                return { date: today, count: 0 };
-            }
-            return parsed;
-        }
-
-        // FUNGSI UPDATE TAMPILAN SISA KUOTA DI TOMBOL
-        function updateQuotaUI() {
-            const quota = getSearchQuotaData();
-            const remaining = MAX_DAILY_SEARCH - quota.count;
-            const btn = document.getElementById('btnCheck');
-            const info = document.getElementById('quotaInfo');
-
-            if (remaining <= 0) {
-                btn.disabled = true;
-                btn.innerText = "Kuota Harian Habis ❌";
-                info.innerText = "Sisa kuota: 0x cek. Batas 5x per hari. Silakan coba lagi besok!";
-                info.className = "text-center text-xs text-red-400 mt-2 font-mono";
-            } else {
-                info.className = "text-center text-xs text-gray-400 mt-2 font-mono";
-            }
-        }
 
         function suggestLaptopClean() {
             const input = document.getElementById('laptopNameInput').value.toLowerCase();
@@ -251,148 +189,29 @@
             }, 350);
         }
 
-        async function checkCompatibilityWithGemini() {
-            // Validasi Kuota Terlebih Dahulu sebelum eksekusi API
-            const quota = getSearchQuotaData();
-            if (quota.count >= MAX_DAILY_SEARCH) {
-                alert("Batas penggunaan sistem harian Anda telah mencapai limit (Maks 5x pencarian sehari). Silakan coba lagi besok!");
-                updateQuotaUI();
-                return;
-            }
-
+        // ==================== FIX MUTLAK: JEMBATAN OTOMATIS BAHASA INDONESIA ====================
+        function checkCompatibilityOnGoogleIndo() {
             const laptopName = document.getElementById('laptopNameInput').value;
             const userRam = document.getElementById('laptopRam').value;
             const gameSelected = document.getElementById('gameInput').value;
-            const btn = document.getElementById('btnCheck');
 
             if (!laptopName || !gameSelected) {
                 alert("Harap isi nama laptop dan judul game terlebih dahulu!");
                 return;
             }
 
-            btn.innerText = "Mencari data spesifikasi game...";
-            btn.disabled = true;
+            // Meracik kalimat murni Bahasa Indonesia yang langsung memicu hasil spesifikasi lokal
+            const kalimatPencarian = ` Game ${gameSelected} untuk ${laptopName} RAM ${userRam} GB kuat atau tidak jawab singkat kuat atau tidak kuat`;
 
-            let gameMinSpecs = "Tidak ada data spesifikasi minimum spesifik.";
-            let gameRecSpecs = "Tidak ada data spesifikasi rekomendasi spesifik.";
-
-            try {
-                const rawgSearchUrl = `https://api.rawg.io/api/games?key=${RAWG_API_KEY}&search=${encodeURIComponent(gameSelected)}&page_size=1`;
-                const rawgResp = await fetch(rawgSearchUrl);
-                const rawgData = await rawgResp.json();
-                
-                if (rawgData && rawgData.results && rawgData.results.length > 0) {
-                    const platformsData = rawgData.results[0].platforms;
-                    if (platformsData) {
-                        const pcPlatform = platformsData.find(p => p.platform.slug === "pc");
-                        if (pcPlatform && pcPlatform.requirements_en) {
-                            if (pcPlatform.requirements_en.minimum) gameMinSpecs = pcPlatform.requirements_en.minimum;
-                            if (pcPlatform.requirements_en.recomended) gameRecSpecs = pcPlatform.requirements_en.recomended;
-                        }
-                    }
-                }
-            } catch (err) {
-                console.log("Gagal menarik spek asli via RAWG, lanjut memakai pencarian mandiri AI...", err);
-            }
-
-            btn.innerText = " Sedang Menganalisis DI LINK.YU...";
-
-          let bagianSyaratGame = "";
+            // Enkripsi teks agar aman dibaca oleh browser
+            const urlFormatAman = encodeURIComponent(kalimatPencarian);
             
-            if (gameMinSpecs.includes("Tidak ada data") || gameMinSpecs.trim() === "") {
-                // Jika RAWG kosong, paksa AI pakai otak internalnya secara mutlak
-                bagianSyaratGame = `[PERINTAH UTMA]
-Data spesifikasi dari API kosong. Kamu WAJIB menggunakan database pengetahuan internal kamu sendiri untuk menganalisis spesifikasi sistem, vram, dan RAM yang dibutuhkan oleh game "${gameSelected}".`;
-            } else {
-                // Jika RAWG ada isinya, masukkan ke prompt
-                bagianSyaratGame = `[TEKS MENTAH SYARAT GAME DARI API]
-Teks Minimum: "${gameMinSpecs.replace(/"/g, "'")}"
-Teks Rekomendasi: "${gameRecSpecs.replace(/"/g, "'")}"`;
-            }
+            // Mengarahkan ke Google Search resmi
+            const linkGoogleOtomatis = `https://www.google.com/search?q=${urlFormatAman}`;
 
-            // PROMPT FINAL YANG DIKIRIM
-            const promptAI = `Tugas: Analisis kecocokan hardware laptop untuk menjalankan game secara akurat.
-
-[HARDWARE LAPTOP PEMBELI]
-Nama Laptop: ${laptopName}
-RAM Laptop: ${userRam} GB
-
-${bagianSyaratGame}
-
-Aturan Analisis:
-1. Identifikasi VGA/GPU asli yang tertanam pada laptop "${laptopName}" (Contoh: jika tertulis gtx 980, berarti VGA-nya NVIDIA GeForce GTX 980).
-2. Nilai apakah hardware tersebut (CPU & VGA) kuat, lag, atau tidak bisa untuk game "${gameSelected}" rilisan terbaru. JANGAN PERNAH berasumsi semua game pasti lancar jika data API kosong!
-
-Aturan Kategori Status Hasil:
-- "KUAT": Jika spesifikasi laptop di atas syarat game dan dijamin lancar fps tinggi.
-- "LAG": Jika laptop mepet syarat minimum, atau komponennya seri tua (seperti GTX 980 atau i3 lama) yang dipaksa menjalankan game berat/terbaru sehingga pasti patah-patah/drop FPS.
-- "TIDAK BISA": Jika VGA/RAM berada di bawah syarat minimum mutlak game.
-
-Jawab kaku dalam format JSON saja tanpa markdown/bintang/backtick:
-{"status": "KUAT atau LAG atau TIDAK BISA", "vga": "Sebutkan hanya tipe VGA laptop ini secara singkat"}`;
-            
-            try {
-                const response = await fetch(`${BASE_URL.replace(/\/$/, "")}/chat/completions`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${API_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: MODEL_NAME,
-                        messages: [{ role: "user", content: promptAI }],
-                        temperature: 0.1
-                    })
-                });
-
-                const data = await response.json();
-                let aiText = data.choices[0].message.content.trim();
-
-                aiText = aiText.replace(/```json/g, "").replace(/```/g, "").trim();
-                
-               const result = JSON.parse(aiText);
-                const statusHasil = result.status.toUpperCase();
-                const vgaLaptop = result.vga || "Tidak terdeteksi"; // Mengambil nama VGA dari AI
-
-                document.getElementById('resultContainer').classList.remove('hidden');
-                document.getElementById('resLaptop').innerText = laptopName;
-                document.getElementById('resGame').innerText = gameSelected;
-                
-                // Teks rincian otomatis diisi secara hemat tanpa kalimat AI yang panjang
-                document.getElementById('aiAnalysisResult').innerText = `VGA Terdeteksi: ${vgaLaptop}\nStatus Kompatibilitas: Laptop ini masuk dalam kategori ${statusHasil} untuk menjalankan game ${gameSelected}.`;
-
-                const statusBadge = document.getElementById('statusBadge');
-                
-                // LOGIKA WARNA BADGE (Tetap sama seperti kodinganmu)
-                if (statusHasil.includes("KUAT") && !statusHasil.includes("TIDAK") && !statusHasil.includes("LAG")) {
-                    statusBadge.innerText = "Kuat / Lancar Jaya! 🔥";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-green-950/80 text-green-400 border border-green-600/60 shadow-lg shadow-green-950/20";
-                } else if (statusHasil.includes("LAG")) {
-                    statusBadge.innerText = "Bisa Main Tapi Lag  Patah-Patah ⚠️\nGAK TANGGUNG JAWAB JIKA TIDAK BISA MAIN";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-amber-950/80 text-amber-400 border border-amber-600/60 shadow-lg shadow-amber-950/20 whitespace-pre-line";
-                } else {
-                    statusBadge.innerText = "Tidak Bisa / Spesifikasi Kurang ❌";
-                    statusBadge.className = "text-center py-4 rounded-xl text-xl font-black uppercase tracking-wider mb-6 bg-red-950/80 text-red-400 border border-red-600/60 shadow-lg shadow-red-950/20";
-                }
-
-                // KETIKA BERHASIL MENDAPATKAN HASIL DARI GEMINI, TAMBAHKAN HITUNGAN KUOTA
-                const currentQuota = getSearchQuotaData();
-                currentQuota.count += 1;
-                localStorage.setItem('linkyu_search_quota', JSON.stringify(currentQuota));
-
-            } catch (error) {
-                console.error(error);
-                alert("Gagal memproses data atau format AI tidak sesuai. Silakan klik sekali lagi.");
-            } finally {
-                btn.disabled = false;
-                updateQuotaUI(); // Perbarui sisa kuota setelah request selesai
-            }
+            // Langsung buka tab baru dan Google otomatis mencari sendiri secara instan!
+            window.open(linkGoogleOtomatis, '_blank');
         }
-
-        // JALANKAN CEK KUOTA SAAT HALAMAN PERTAMA KALI DI-LOAD
-        window.onload = function() {
-            updateQuotaUI();
-        };
     </script>
 </body>
 </html>
