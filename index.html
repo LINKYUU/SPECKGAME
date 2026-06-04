@@ -21,11 +21,9 @@
 
     <h1 class="text-center text-4xl md:text-5xl font-black leading-tight mb-4 tracking-tight">
         <span class="text-[#b19cd9] drop-shadow-md">WAJIB PESAN GAME DI LINK.YU</span><br>
-        <span class="text-[#c5a3eb] drop-shadow-md">SELAIN ITU BUKAN TOKO SAYA</span><br>
         <span class="text-[#d8a8eb] drop-shadow-md">WA : 08 777 26 77776</span>
     </h1>
     
-    <p class="text-gray-400 text-sm md:text-base mb-12">KETIK PROCCESOR DAN VGA KAMU DENGAN BENAR
 
     <div class="bg-[#1e2235] border border-[#2a2f45] rounded-[1.5rem] p-8 w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-8 shadow-2xl">
         
@@ -43,8 +41,8 @@
                 <label class="block text-[11px] font-bold text-gray-400 tracking-wider mb-2">KAPASITAS RAM LAPTOP</label>
                 <select id="laptopRam" class="w-full bg-[#2a2f45] border border-transparent rounded-xl p-3.5 text-sm text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition appearance-none cursor-pointer">
                     <option value="4">4 GB</option>
-                    <option value="8">8 GB</option>
-                    <option value="16" selected>16 GB</option>
+                    <option value="8" selected>8 GB</option>
+                    <option value="16">8 GB</option>
                     <option value="32">32 GB</option>
                     <option value="64">64 GB</option>
                 </select>
@@ -144,64 +142,17 @@
         // ==========================================
         // 2. KODE ANALISIS & BUKA TAB BARU (AI SUMMARY)
         // ==========================================
+       // ==========================================
+        // 2. BUKA PENCARIAN GOOGLE ASLI DI TAB BARU
+        // ==========================================
         function checkCompatibilityOnGoogleIndo() {
             const laptopName = document.getElementById('laptopNameInput').value;
-            const userRam = parseInt(document.getElementById('laptopRam').value);
+            const userRam = document.getElementById('laptopRam').value;
             const gameSelected = document.getElementById('gameInput').value;
 
             if (!laptopName || !gameSelected) {
                 alert("Harap isi nama laptop dan judul game terlebih dahulu!");
                 return;
-            }
-
-            // DETEKSI LEVEL LAPTOP
-            const laptop = laptopName.toLowerCase();
-            let level = "low";
-
-            if (
-                laptop.includes("rtx 40") || laptop.includes("rtx 3070") || laptop.includes("rtx 3080") ||
-                laptop.includes("rog") || laptop.includes("legion") || laptop.includes("predator")
-            ) {
-                level = "high";
-            } else if (
-                laptop.includes("gtx") || laptop.includes("rtx 20") || laptop.includes("rtx 3050") ||
-                laptop.includes("tuf") || laptop.includes("nitro") || laptop.includes("loq")
-            ) {
-                level = "medium";
-            }
-
-            // SUSUN TEKS UNTUK TAB BARU (Sesuai Gambar Terakhir)
-            let statusTitle = "";
-            let warnaTitle = "";
-            let mainParagraph = "";
-            let bulletPoints = "";
-
-            if (level === "high" && userRam >= 16) {
-                statusTitle = "KUAT.";
-                warnaTitle = "text-green-600";
-                mainParagraph = `Laptop Anda memiliki spesifikasi <a href="#" class="text-[#1a0dab] underline">${laptopName}</a> dengan RAM ${userRam}GB, yang sudah jauh melampaui persyaratan minimum untuk game <a href="#" class="text-[#1a0dab] underline">${gameSelected}</a>.`;
-                bulletPoints = `
-                    <ul class="list-disc pl-5 space-y-3 text-gray-800">
-                    </ul>
-                `;
-            } 
-            else if (level === "medium" || (level === "high" && userRam < 16)) {
-                statusTitle = "CUKUP KUAT.";
-                warnaTitle = "text-blue-600";
-                mainParagraph = `Laptop Anda memiliki spesifikasi <a href="#" class="text-[#1a0dab] underline">${laptopName}</a> dengan RAM ${userRam}GB. Spesifikasi ini sudah memenuhi standar untuk menjalankan game <a href="#" class="text-[#1a0dab] underline">${gameSelected}</a>.`;
-                bulletPoints = `
-                    <ul class="list-disc pl-5 space-y-3 text-gray-800">
-                    </ul>
-                `;
-            } 
-            else {
-                statusTitle = "TIDAK MEMENUHI SYARAT.";
-                warnaTitle = "text-red-600";
-                mainParagraph = `Laptop Anda dengan spesifikasi <a href="#" class="text-[#1a0dab] underline">${laptopName}</a> dan RAM ${userRam}GB, sepertinya akan kesulitan untuk memenuhi persyaratan minimum game <a href="#" class="text-[#1a0dab] underline">${gameSelected}</a>.`;
-                bulletPoints = `
-                    <ul class="list-disc pl-5 space-y-3 text-gray-800">
-                    </ul>
-                `;
             }
 
             // Tampilkan Loading di halaman utama
@@ -210,52 +161,23 @@
             hasilBox.innerHTML = `
                 <div class="flex items-center justify-center gap-3 text-[#b19cd9]">
                     <svg class="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span class="font-bold">Membuka Tab Analisis...</span>
+                    <span class="font-bold">Membuka Google Search...</span>
                 </div>
             `;
             hasilBox.scrollIntoView({ behavior: "smooth" });
 
-            // Delay sebentar lalu Buka Tab Baru dengan tampilan Google AI Summary (Putih)
+            // Delay sebentar lalu alihkan ke Google Search
             setTimeout(() => {
-                hasilBox.innerHTML = `<div class="text-center text-green-400 font-bold">✅ Hasil telah dibuka di tab baru.</div>`;
-
-                const newTab = window.open("", "_blank");
-                if (newTab) {
-                    newTab.document.write(`
-                        <!DOCTYPE html>
-                        <html lang="id">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Ringkasan AI - ${laptopName}</title>
-                            <script src="https://cdn.tailwindcss.com"><\/script>
-                            <style>
-                                body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-                            </style>
-                        </head>
-                        <body class="bg-white text-gray-900 min-h-screen p-8 md:p-12">
-                            <div class="max-w-4xl mx-auto mt-10">
-                                
-                                <div class="flex items-center gap-2 mb-6 text-[#1a73e8] font-semibold text-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-                                        <path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6-4.8-6 4.8 2.4-7.2-6-4.8h7.6z"/>
-                                    </svg>
-                                    Ringkasan AI
-                                </div>
-
-                                <h2 class="text-[22px] font-extrabold ${warnaTitle} mb-5 tracking-wide">${statusTitle}</h2>
-                                
-                                <div class="text-[15px] leading-relaxed text-[#202124]">
-                                    <p class="mb-5">${mainParagraph}</p>
-                                    ${bulletPoints}
-                                </div>
-
-                            </div>
-                        </body>
-                        </html>
-                    `);
-                    newTab.document.close();
-                }
+                hasilBox.innerHTML = `<div class="text-center text-green-400 font-bold">✅ Berhasil dialihkan ke tab Google.</div>`;
+                
+                // Susun kalimat pencarian agar relevan dan spesifik
+                const keywordPencarian = `${laptopName} RAM ${userRam}GB kuat main game ${gameSelected} jawab hanya kuat atau tidak kuat secara singkat`;
+                
+                // Ubah teks menjadi format URL yang valid (encode)
+                const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(keywordPencarian)}`;
+                
+                // Buka link Google di Tab Baru
+                window.open(googleUrl, "_blank");
             }, 800);
         }
     </script>
