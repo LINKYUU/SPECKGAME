@@ -34,8 +34,7 @@
             
             <div>
                 <label class="block text-[11px] font-bold text-gray-400 tracking-wider mb-2">NAMA / TIPE LAPTOP LENGKAP</label>
-                <input id="laptopNameInput" type="text" class="w-full bg-[#2a2f45] border border-transparent rounded-xl p-3.5 text-sm text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition placeholder-gray-500 mb-4" placeholder="Masukan laptop/Pc Dengan Lengkap !">
-                
+               <input id="laptopNameInput" type="text" class="w-full bg-[#2a2f45] border border-transparent rounded-xl p-3.5 text-sm text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition placeholder-gray-500" placeholder="Masukan laptop/Pc Dengan Lengkap !">
                 <label class="block text-[11px] font-bold text-gray-400 tracking-wider mb-2">KAPASITAS RAM LAPTOP</label>
                 <select id="laptopRam" class="w-full bg-[#2a2f45] border border-transparent rounded-xl p-3.5 text-sm text-gray-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition appearance-none cursor-pointer">
                     <option value="2">2 GB</option>
@@ -62,29 +61,22 @@
             </div>
 
             <div class="pt-6">
-                <button onclick="checkCompatibilityWithGroqDirect()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 py-3.5 rounded-xl font-bold text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] flex justify-center items-center gap-2">
-                    🚀 Cek Kompatibilitas AI Instan
+                <button onclick="checkCompatibilityOnGoogleIndo()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 transition-all duration-300 py-3.5 rounded-xl font-bold text-white shadow-[0_0_20px_rgba(139,92,246,0.3)] flex justify-center items-center gap-2">
+                    🚀 Cek Kompatibilitas Otomatis
                 </button>
             </div>
         </div>
     </div>
 
-    <p class="text-xs text-gray-600 mt-6 mb-10">*Sistem dianalisis menggunakan kecerdasan buatan secara real-time dan super hemat token.</p>
+    <p class="text-xs text-gray-600 mt-6 mb-10">*Sistem akan otomatis membuka Google Search dengan kalimat pencarian bahasa Indonesia secara instan.</p>
 
-    <div id="hasilBox" class="w-full max-w-4xl pb-20 hidden">
-        <div class="bg-[#1e2235] p-8 rounded-[1.5rem] border border-[#2a2f45] shadow-2xl text-center">
-            <h3 class="text-gray-400 text-xs font-bold tracking-widest mb-2 uppercase">Hasil Analisis Spesifikasi</h3>
-            <div id="aiOutput" class="text-4xl md:text-5xl font-black tracking-wider transition-all duration-300">
-                -
-            </div>
-        </div>
-    </div>
+    <div id="hasilBox" class="w-full max-w-4xl pb-20"></div>
 
     <script>
         // ==========================================
         // 1. INTEGRASI API RAWG
         // ==========================================
-        const rawgApiKey = "158b3858daed4d67af02a839d14ba445"; 
+        const rawgApiKey = "158b3858daed4d67af02a839d14ba445"; // Isi API Key RAWG Anda
         const gameInput = document.getElementById('gameInput');
         const rawgDropdown = document.getElementById('rawgDropdown');
         let debounceTimer;
@@ -103,6 +95,10 @@
 
             debounceTimer = setTimeout(async () => {
                 try {
+                    if(rawgApiKey === "MASUKKAN_API_KEY_RAWG_ANDA_DISINI") {
+                        rawgDropdown.innerHTML = `<li class="p-4 text-sm text-red-400 text-center">API Key RAWG belum diisi di kode.</li>`;
+                        return;
+                    }
                     const response = await fetch(`https://api.rawg.io/api/games?key=${rawgApiKey}&search=${query}&page_size=6`);
                     const data = await response.json();
                     rawgDropdown.innerHTML = ''; 
@@ -142,85 +138,45 @@
         });
 
         // ==========================================
-        // 2. KODE ANALISIS LANGSUNG KE API GROQ (TANPA NODE.JS)
+        // 2. KODE ANALISIS & BUKA TAB BARU (AI SUMMARY)
         // ==========================================
-        // MASUKKAN API KEY GROQ ANDA DI SINI
-        const GROQ_API_KEY = "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";
-
-        async function checkCompatibilityWithGroqDirect() {
+       // ==========================================
+        // 2. BUKA PENCARIAN GOOGLE ASLI DI TAB BARU
+        // ==========================================
+        function checkCompatibilityOnGoogleIndo() {
             const laptopName = document.getElementById('laptopNameInput').value;
             const userRam = document.getElementById('laptopRam').value;
             const gameSelected = document.getElementById('gameInput').value;
-            const hasilBox = document.getElementById("hasilBox");
-            const aiOutput = document.getElementById("aiOutput");
 
             if (!laptopName || !gameSelected) {
                 alert("Harap isi nama laptop dan judul game terlebih dahulu!");
                 return;
             }
 
-            // Memunculkan kotak loading
-            hasilBox.classList.remove('hidden');
-            aiOutput.className = "text-xl font-bold text-indigo-400 animate-pulse";
-            aiOutput.innerHTML = `⏳ MENGANALISIS SPESIFIKASI...`;
+            // Tampilkan Loading di halaman utama
+            let hasilBox = document.getElementById("hasilBox");
+            hasilBox.className = "mt-6 bg-[#1e2235] p-6 rounded-[1.5rem] border border-[#2a2f45] shadow-2xl mx-auto w-full";
+            hasilBox.innerHTML = `
+                <div class="flex items-center justify-center gap-3 text-[#b19cd9]">
+                    <svg class="animate-spin h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span class="font-bold">Membuka Google Search...</span>
+                </div>
+            `;
             hasilBox.scrollIntoView({ behavior: "smooth" });
 
-            if (GROQ_API_KEY === "MASUKKAN_API_KEY_GROQ_ANDA_DISINI" || !GROQ_API_KEY) {
-                aiOutput.className = "text-sm text-red-400 font-bold";
-                aiOutput.innerHTML = "❌ Gagal: API Key Groq belum diisi di dalam kode HTML.";
-                return;
-            }
-
-           try {
-                // Request langsung dari browser ke Groq API
-                const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${GROQ_API_KEY}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        model: "llama-3.3-70b-versatile",
-                        messages: [
-                            {
-                                role: "system",
-                                content: "Kamu adalah sistem pengecek spesifikasi game PC. Tugasmu HANYA menganalisis apakah spesifikasi komputer yang diberikan kuat atau tidak kuat untuk memainkan game tersebut berdasarkan spesifikasi minimum game di pasaran. Kamu HANYA boleh menjawab dengan dua pilihan kata ini saja: 'KUAT' atau 'TIDAK KUAT'. Jangan berikan teks penjelasan, jangan berikan tanda baca, jangan basa-basi."
-                            },
-                            {
-                                role: "user",
-                                content: `Laptop: ${laptopName}\nRAM: ${userRam} GB\nGame: ${gameSelected}`
-                            }
-                        ],
-                        temperature: 0,
-                        max_tokens: 15 // SUDAH DINAIKKAN AGAR JAWABAN TIDAK TERPOTONG
-                    })
-                });
-
-                const data = await response.json();
+            // Delay sebentar lalu alihkan ke Google Search
+            setTimeout(() => {
+                hasilBox.innerHTML = `<div class="text-center text-green-400 font-bold">✅ Berhasil dialihkan ke tab Google.</div>`;
                 
-                if (data.choices && data.choices[0]) {
-                    const resultText = data.choices[0].message.content.trim().toUpperCase();
-
-                    // Memberikan warna teks dinamis sesuai jawaban AI Groq
-                    if (resultText.includes("TIDAK KUAT")) {
-                        aiOutput.className = "text-4xl md:text-5xl font-black tracking-wider text-red-500 drop-shadow-[0_0_15px_rgba(239,68,68,0.4)]";
-                        aiOutput.innerHTML = "🔴 TIDAK KUAT";
-                    } else if (resultText.includes("KUAT")) {
-                        aiOutput.className = "text-4xl md:text-5xl font-black tracking-wider text-green-500 drop-shadow-[0_0_15px_rgba(34,197,94,0.4)]";
-                        aiOutput.innerHTML = "🟢 KUAT";
-                    } else {
-                        aiOutput.className = "text-2xl font-bold text-yellow-500";
-                        aiOutput.innerHTML = resultText;
-                    }
-                } else {
-                    throw new Error("Respons dari Groq tidak valid");
-                }
-
-            } catch (error) {
-                console.error(error);
-                aiOutput.className = "text-sm text-red-400 font-bold";
-                aiOutput.innerHTML = "❌ Terjadi kesalahan jaringan / API Key salah atau diblokir.";
-            }
+                // Susun kalimat pencarian agar relevan dan spesifik
+                const keywordPencarian = `${laptopName} RAM ${userRam}GB kuat main game ${gameSelected} jawab hanya kuat atau tidak kuat secara singkat`;
+                
+                // Ubah teks menjadi format URL yang valid (encode)
+                const googleUrl = `https://www.google.com/search?q=${encodeURIComponent(keywordPencarian)}`;
+                
+                // Buka link Google di Tab Baru
+                window.open(googleUrl, "_blank");
+            }, 800);
         }
     </script>
 </body>
